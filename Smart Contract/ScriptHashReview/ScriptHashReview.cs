@@ -106,10 +106,6 @@ public class ScriptHashReview : SmartContract
 
 				return GetReviewForScriptHash(scriptHash, number);
             }
-			if (operation == "test")
-			{
-				return "JeanMichelAullas";
-			}
 		}
 
 		return false;      
