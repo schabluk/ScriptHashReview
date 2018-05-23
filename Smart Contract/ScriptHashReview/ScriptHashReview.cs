@@ -9,12 +9,14 @@ public class ScriptHashReview : SmartContract
 {
 	//https://peterlinx.github.io/DataTransformationTools/
 
-	// testinvoke f6329adf3ad3f0028b2c9ea63a3247ab51710bed addReview ['AK2nJJpJr6o664CWJKi1QRXjqeic2zRp8y', '55526d13aa05b8c6f69b31028e11618351a68175', '5', 'Very good']
-	// testinvoke f6329adf3ad3f0028b2c9ea63a3247ab51710bed getReview ['AK2nJJpJr6o664CWJKi1QRXjqeic2zRp8y', '55526d13aa05b8c6f69b31028e11618351a68175']   
+	// testinvoke f6329adf3ad3f0028b2c9ea63a3247ab51710bed addReview ['AK2nJJpJr6o664CWJKi1QRXjqeic2zRp8y', '55526d13aa05b8c6f69b31028e11618351a68175', '9', 'Very good']
+	// testinvoke f6329adf3ad3f0028b2c9ea63a3247ab51710bed getReview ['AK2nJJpJr6o664CWJKi1QRXjqeic2zRp8y', '55526d13aa05b8c6f69b31028e11618351a68175']
+	// testinvoke f6329adf3ad3f0028b2c9ea63a3247ab51710bed editReview ['AK2nJJpJr6o664CWJKi1QRXjqeic2zRp8y', '55526d13aa05b8c6f69b31028e11618351a68175', '1', 'Not really good']
 	// testinvoke f6329adf3ad3f0028b2c9ea63a3247ab51710bed getNumberOfReviewsFrom ['AK2nJJpJr6o664CWJKi1QRXjqeic2zRp8y']
 	// testinvoke f6329adf3ad3f0028b2c9ea63a3247ab51710bed getNumberOfReviewsFor ['55526d13aa05b8c6f69b31028e11618351a68175']
 	// testinvoke f6329adf3ad3f0028b2c9ea63a3247ab51710bed getReviewFromAddress ['AK2nJJpJr6o664CWJKi1QRXjqeic2zRp8y', '1']
 
+    // Contract owner key   
 	public static readonly byte[] contractOwnerAddress = "AK2nJJpJr6o664CWJKi1QRXjqeic2zRp8y".ToScriptHash();
 
     // Utilities
@@ -35,7 +37,6 @@ public class ScriptHashReview : SmartContract
     {
 		if (Runtime.Trigger == TriggerType.Verification)
 		{
-			// param Owner must be script hash
 			bool isOwner = Runtime.CheckWitness(contractOwnerAddress);
 
 			if (isOwner) { return true; }
