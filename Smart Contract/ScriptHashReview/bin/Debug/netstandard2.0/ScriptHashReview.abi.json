@@ -1,5 +1,5 @@
 {
-    "hash":"0x8c2ad4355f4a241e61999c28e99cb2134f30d841",
+    "hash":"0x92da31be96c37d89bfa8031ae1eb253dcd4d2e08",
     "entrypoint":"Main",
     "functions":
     [
@@ -99,6 +99,28 @@
                 }
             ],
             "returntype":"Any"
+        },
+        {
+            "name":"GetNumberOfReviewsFrom",
+            "parameters":
+            [
+                {
+                    "name":"address",
+                    "type":"ByteArray"
+                }
+            ],
+            "returntype":"Integer"
+        },
+        {
+            "name":"GetNumberOfReviewsFor",
+            "parameters":
+            [
+                {
+                    "name":"scriptHash",
+                    "type":"ByteArray"
+                }
+            ],
+            "returntype":"Integer"
         },
         {
             "name":"IsReviewOK",
