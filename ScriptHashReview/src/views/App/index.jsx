@@ -3,7 +3,7 @@ import injectSheet from "react-jss";
 import PropTypes from "prop-types";
 
 import Header from "./../../components/Header";
-import ScriptHashReviewActions from "./../../components/ScriptHashReviewActions";
+import NOSActions from "./../../components/NOSActions";
 import AddReview from "./../../components/ScriptHashReviewActions/AddReview";
 import GetReview from "./../../components/ScriptHashReviewActions/GetReview";
 
@@ -30,12 +30,13 @@ const styles = {
 
 const App = ({ classes }) => (
   <div className={classes.App}>
-    <Header title="This dApp lets you review ScriptHash!" />
+    <Header title="A nOS dApp starter-kit!" />
     <p className={classes.intro}>
-      The main page is here: <code>src/views/App/index.js</code>
+      Go, edit <code>src/views/App/index.js</code> and save to reload.
     </p>
+    <p className={classes.intro}>Or test out the following demo functions!</p>
     <hr className={classes.lineBreak} />
-    <ScriptHashReviewActions />
+    <NOSActions />
     <AddReview />
     <GetReview />
   </div>
