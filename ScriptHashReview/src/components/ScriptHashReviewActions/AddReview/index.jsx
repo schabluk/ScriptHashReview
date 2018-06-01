@@ -26,9 +26,9 @@ class AddReview extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      scriptHashReview: "55526d13aa05b8c6f69b31028e11618351a68175",
-      rating: "9",
-      comment: "Very good review"
+      scriptHashReview: "55526d13aa05b8c6f69b31028e11618351a681po",
+      rating: "8",
+      comment: "Veryyyyy good review"
     };
 
     this.handleChangeScriptHashReview = this.handleChangeScriptHashReview.bind(this);

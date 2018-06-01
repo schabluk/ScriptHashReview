@@ -77039,9 +77039,9 @@ var AddReview = function (_React$Component) {
     }));
 
     _this.state = {
-      scriptHashReview: "55526d13aa05b8c6f69b31028e11618351a68175",
-      rating: "9",
-      comment: "Very good review"
+      scriptHashReview: "55526d13aa05b8c6f69b31028e11618351a681po",
+      rating: "8",
+      comment: "Veryyyyy good review"
     };
 
     _this.handleChangeScriptHashReview = _this.handleChangeScriptHashReview.bind(_this);
@@ -77235,7 +77235,7 @@ var GetReview = function (_React$Component) {
 
 
               nos.testInvoke({ scriptHash: scriptHash, operation: operation, args: args }).then(function (script) {
-                return alert("Test invoke script: " + JSON.stringify(script) + " ");
+                return _this.handleDisplayReview(script);
               });
 
             case 8:
@@ -77248,7 +77248,11 @@ var GetReview = function (_React$Component) {
 
     _this.state = {
       address: "AK2nJJpJr6o664CWJKi1QRXjqeic2zRp8y",
-      scriptHashReview: "55526d13aa05b8c6f69b31028e11618351a68175"
+      scriptHashReview: "55526d13aa05b8c6f69b31028e11618351a68175",
+      retrievedReviewOwner: "",
+      retrievedScriptHash: "",
+      retrievedRating: "",
+      retrievedComment: ""
     };
 
     _this.handleChangeAddress = _this.handleChangeAddress.bind(_this);
@@ -77269,6 +77273,50 @@ var GetReview = function (_React$Component) {
       this.setState({ scriptHashReview: event.target.value });
     }
   }, {
+    key: "handleDisplayReview",
+    value: function handleDisplayReview(script) {
+      var _state = this.state,
+          retrievedReviewOwner = _state.retrievedReviewOwner,
+          retrievedScriptHash = _state.retrievedScriptHash,
+          retrievedRating = _state.retrievedRating,
+          retrievedComment = _state.retrievedComment;
+
+
+      var stringifiedJSON = JSON.stringify(script);
+      var parsedJSON = JSON.parse(stringifiedJSON);
+
+      var responseStack = parsedJSON.stack;
+      var responseStackStringifiedJSON = JSON.stringify(responseStack);
+      var parsedResponseStack = JSON.parse(responseStackStringifiedJSON);
+      var stringifiedResponseValue = JSON.stringify(parsedResponseStack);
+      var parsedResponseValue = JSON.parse(stringifiedResponseValue)[0];
+
+      var reviewOwnerStringified = JSON.stringify(parsedResponseValue.value[0]);
+      var reviewOwnerParsedValue = JSON.parse(reviewOwnerStringified).value;
+      var reviewOwnerHexstring2str = _neonJs.u.hexstring2str(reviewOwnerParsedValue);
+      var reviewOwnerHexlify = (0, _binascii.hexlify)(reviewOwnerHexstring2str);
+      var reviewOwnerReverseHex = _neonJs.u.reverseHex(reviewOwnerHexlify);
+      var reviewOwner = _neonJs.wallet.getAddressFromScriptHash(reviewOwnerReverseHex);
+      this.setState({ retrievedReviewOwner: reviewOwner });
+
+      var scriptHashStringified = JSON.stringify(parsedResponseValue.value[1]);
+      var scriptHash = _neonJs.u.hexstring2str(JSON.parse(scriptHashStringified).value);
+      this.setState({ retrievedScriptHash: scriptHash });
+
+      var ratingStringified = JSON.stringify(parsedResponseValue.value[2]);
+      var rating = JSON.parse(ratingStringified).value;
+      this.setState({ retrievedRating: rating });
+
+      var commentStringified = JSON.stringify(parsedResponseValue.value[3]);
+      var comment = _neonJs.u.hexstring2str(JSON.parse(commentStringified).value);
+      this.setState({ retrievedComment: comment });
+
+      var responseGas_consumed = parsedJSON.gas_consumed;
+      var responseScript = parsedJSON.script;
+      var responseState = parsedJSON.state;
+      var responseTx = parsedJSON.tx;
+    }
+  }, {
     key: "render",
     value: function render() {
       return _react2.default.createElement(
@@ -77280,13 +77328,13 @@ var GetReview = function (_React$Component) {
           "Get review"
         ),
         _react2.default.createElement(
-          "label",
+          "p",
           null,
           "Address:",
           _react2.default.createElement("input", { type: "text", value: this.state.address, onChange: this.handleChangeAddress })
         ),
         _react2.default.createElement(
-          "label",
+          "p",
           null,
           "ScriptHash:",
           _react2.default.createElement("input", {
@@ -77299,6 +77347,35 @@ var GetReview = function (_React$Component) {
           "button",
           { onClick: this.handleGetReview },
           "Get review"
+        ),
+        _react2.default.createElement(
+          "h2",
+          null,
+          "Retrieved review"
+        ),
+        _react2.default.createElement(
+          "p",
+          null,
+          "Review owner",
+          _react2.default.createElement("input", { type: "text", value: this.state.retrievedReviewOwner })
+        ),
+        _react2.default.createElement(
+          "p",
+          null,
+          "Script Hash",
+          _react2.default.createElement("input", { type: "text", value: this.state.retrievedScriptHash })
+        ),
+        _react2.default.createElement(
+          "p",
+          null,
+          "Rating",
+          _react2.default.createElement("input", { type: "text", value: this.state.retrievedRating })
+        ),
+        _react2.default.createElement(
+          "p",
+          null,
+          "Comment",
+          _react2.default.createElement("input", { type: "text", value: this.state.retrievedComment })
         )
       );
     }
