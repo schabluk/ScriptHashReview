@@ -1,18 +1,11 @@
 import React from "react";
 import injectSheet from "react-jss";
-import { PropTypes, string } from "prop-types";
+import { string } from "prop-types";
 import { react } from "@nosplatform/api-functions";
 import { u, wallet } from "@cityofzion/neon-js";
 import { unhexlify } from "binascii";
 
 const { injectNOS, nosProps } = react.default;
-
-const styles = {
-  button: {
-    margin: "16px",
-    fontSize: "14px"
-  }
-};
 
 class AddReview extends React.Component {
   static defaultProps = {
@@ -58,7 +51,7 @@ class AddReview extends React.Component {
     );
 
     const args = [myEncodedAddress, scriptHashReview, rating, comment];
-alert(args)
+    alert(args);
     nos
       .testInvoke({ scriptHash, operation, args })
       .then(script => alert(`Test invoke script: ${JSON.stringify(script)} `));
@@ -67,39 +60,77 @@ alert(args)
   render() {
     return (
       <div>
-        <label>
-          ScriptHash:
-          <input
-            type="text"
-            value={this.state.scriptHashReview}
-            onChange={this.handleChangeScriptHashReview}
-          />
-        </label>
-        <label>
-          Rate this script hash:
-          <select value={this.state.rating} onChange={this.handleChangeRating}>
-            <option value="0">0</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-          </select>
-        </label>
-        <label>
-          Comment:
-          <textarea value={this.state.comment} onChange={this.handleChangeComment} />
-        </label>
-        <button onClick={this.handleAddReview}>Add review</button>
-        <p>fqsdfs</p>
+        <section className="mb-0" id="resume">
+          <div className="container">
+            <h3 className="text-center mb-3">Add review</h3>
+            <p>
+              This function allows the user to write a review for a specific script hash. The user
+              needs to mention the script hash they want to associate this rating to, its rating and
+              a comment.
+            </p>
+
+            <div className="form-group">
+              <b>
+                <p>Script hash</p>
+              </b>
+              <input
+                value={this.state.scriptHashReview}
+                onChange={this.handleChangeScriptHashReview}
+                type="text"
+                className="form-control"
+                placeholder="Script hash"
+              />
+            </div>
+            <div className="form-group">
+              <b>
+                <p>Rating</p>
+              </b>
+              <select
+                value={this.state.rating}
+                onChange={this.handleChangeRating}
+                className="form-control"
+              >
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="1">6</option>
+                <option value="2">7</option>
+                <option value="3">8</option>
+                <option value="4">9</option>
+                <option value="5">10</option>
+              </select>
+            </div>
+            <div className="form-group">
+              <b>
+                <p>Comment</p>
+              </b>
+              <textarea
+                value={this.state.comment}
+                onChange={this.handleChangeComment}
+                className="form-control"
+                rows="5"
+                id="comment"
+              />
+            </div>
+            <button
+              onClick={this.handleAddReview}
+              type="button"
+              className="btn btn-outline-secondary btn-block"
+            >
+              Add review
+            </button>
+          </div>
+        </section>
       </div>
     );
   }
 }
 
 AddReview.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.any).isRequired,
   nos: nosProps.isRequired
 };
 
-export default injectNOS(injectSheet(styles)(AddReview));
+export default injectNOS(injectSheet()(AddReview));

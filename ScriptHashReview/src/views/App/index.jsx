@@ -1,49 +1,39 @@
 import React from "react";
 import injectSheet from "react-jss";
-import PropTypes from "prop-types";
 
-import Header from "./../../components/Header";
-import NOSActions from "./../../components/NOSActions";
 import AddReview from "./../../components/ScriptHashReviewActions/AddReview";
 import GetReview from "./../../components/ScriptHashReviewActions/GetReview";
 
-const styles = {
-  "@import": "https://fonts.googleapis.com/css?family=Source+Sans+Pro",
-  "@global html, body": {
-    fontFamily: "Source Sans Pro",
-    margin: 0,
-    padding: 0,
-    backgroundColor: "#ffffff"
-  },
-  App: {
-    textAlign: "center"
-  },
-  intro: {
-    fontSize: "large"
-  },
-  lineBreak: {
-    width: "75%",
-    borderTop: "1px solid #333333",
-    margin: "32px auto"
-  }
-};
+import styles from "../../stylesheets/styles.scss";
+import "../../stylesheets/bootstrap/css/bootstrap.min.css";
 
-const App = ({ classes }) => (
-  <div className={classes.App}>
-    <Header title="A nOS dApp starter-kit!" />
-    <p className={classes.intro}>
-      Go, edit <code>src/views/App/index.js</code> and save to reload.
-    </p>
-    <p className={classes.intro}>Or test out the following demo functions!</p>
-    <hr className={classes.lineBreak} />
-    <NOSActions />
+const App = () => (
+  <div className={styles.App}>
+    <section className="mb-0">
+      <div className="container">
+        <h2 className="text-center mt-5 mb-5">What is ScriptHashReview?</h2>
+        <div className="row">
+          <div className="col-12">
+            <p>
+              ScriptHashReview aims at allowing users to review every smart contract and their
+              script hash associated, that are made available on the NEO Smart Economy. For each
+              unique script hash on the NEO Blockchain, every user (public key) can leave a review
+              with containing a rating as well as a comment associated to it.
+            </p>
+            <p>
+              Down below, you will find all the functionalities available at the moment that
+              interact with the blockchain to store and retrieve information from it.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr className={styles.lineBreak} />
     <AddReview />
+    <hr className={styles.lineBreak} />
     <GetReview />
   </div>
 );
-
-App.propTypes = {
-  classes: PropTypes.object.isRequired
-};
 
 export default injectSheet(styles)(App);

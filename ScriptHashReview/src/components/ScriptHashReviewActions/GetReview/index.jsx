@@ -1,18 +1,11 @@
 import React from "react";
 import injectSheet from "react-jss";
-import { PropTypes, string } from "prop-types";
+import { string } from "prop-types";
 import { react } from "@nosplatform/api-functions";
 import { u, wallet } from "@cityofzion/neon-js";
 import { unhexlify, hexlify } from "binascii";
 
 const { injectNOS, nosProps } = react.default;
-
-const styles = {
-  button: {
-    margin: "16px",
-    fontSize: "14px"
-  }
-};
 
 class GetReview extends React.Component {
   static defaultProps = {
@@ -60,12 +53,15 @@ class GetReview extends React.Component {
   };
 
   handleDisplayReview(script) {
-    const { retrievedReviewOwner, retrievedScriptHash, retrievedRating, retrievedComment } = this.state;
+    const {
+      retrievedReviewOwner,
+      retrievedScriptHash,
+      retrievedRating,
+      retrievedComment
+    } = this.state;
 
     const stringifiedJSON = JSON.stringify(script);
     const parsedJSON = JSON.parse(stringifiedJSON);
-
-
 
     const responseStack = parsedJSON.stack;
     const responseStackStringifiedJSON = JSON.stringify(responseStack);
@@ -93,55 +89,85 @@ class GetReview extends React.Component {
     const comment = u.hexstring2str(JSON.parse(commentStringified).value);
     this.setState({ retrievedComment: comment });
 
-    const responseGas_consumed = parsedJSON.gas_consumed;
+    const responseGasConsumed = parsedJSON.gas_consumed;
     const responseScript = parsedJSON.script;
     const responseState = parsedJSON.state;
+    alert(responseState);
     const responseTx = parsedJSON.tx;
-
   }
 
   render() {
     return (
-      <div>
-        <h1>Get review</h1>
-        <p>
-          Address:
-          <input type="text" value={this.state.address} onChange={this.handleChangeAddress} />
-        </p>
-        <p>
-          ScriptHash:
-          <input
-            type="text"
-            value={this.state.scriptHashReview}
-            onChange={this.handleChangeScriptHashReview}
+      <section className="mb-0" id="resume">
+        <div className="container">
+          <h3 className="text-center mb-3">Get review</h3>
+          <p>
+            This function retrieves all the details of a review, based on 2 parameters; the public
+            key of the review owner and the script hash.
+          </p>
+
+          <div className="input-group mb-5">
+            <input
+              value={this.state.address}
+              onChange={this.handleChangeAddress}
+              type="text"
+              className="form-control"
+              placeholder="Public key"
+            />
+            <input
+              value={this.state.scriptHashReview}
+              onChange={this.handleChangeScriptHashReview}
+              type="text"
+              className="form-control"
+              placeholder="Script hash"
+            />
+            <div className="input-group-append">
+              <button
+                onClick={this.handleGetReview}
+                className="btn btn-outline-secondary"
+                type="button"
+              >
+                Get review
+              </button>
+            </div>
+          </div>
+
+          <h5>Retrieved review</h5>
+          <div className="table-responsive">
+            <table className="table text-center">
+              <thead>
+                <tr>
+                  <th scope="col">Review Owner</th>
+                  <th scope="col">Script hash</th>
+                  <th scope="col">Rating</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{this.state.retrievedReviewOwner}</td>
+                  <td>{this.state.retrievedScriptHash}</td>
+                  <td>{this.state.retrievedRating}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <b>
+            <p>Comment</p>
+          </b>
+          <textarea
+            value={this.state.retrievedComment}
+            className="form-control"
+            rows="5"
+            id="comment"
           />
-        </p>
-        <button onClick={this.handleGetReview}>Get review</button>
-        <h2>Retrieved review</h2>
-        <p>
-          Review owner
-          <input type="text" value={this.state.retrievedReviewOwner} />
-        </p>
-        <p>
-          Script Hash
-          <input type="text" value={this.state.retrievedScriptHash} />
-        </p>
-        <p>
-          Rating
-          <input type="text" value={this.state.retrievedRating} />
-        </p>
-        <p>
-          Comment
-          <input type="text" value={this.state.retrievedComment} />
-        </p>
-      </div>
+        </div>
+      </section>
     );
   }
 }
 
 GetReview.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.any).isRequired,
   nos: nosProps.isRequired
 };
 
-export default injectNOS(injectSheet(styles)(GetReview));
+export default injectNOS(injectSheet()(GetReview));
