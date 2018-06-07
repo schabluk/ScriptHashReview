@@ -9,12 +9,18 @@ public class ScriptHashReview : SmartContract
 {
 	//https://peterlinx.github.io/DataTransformationTools/
 
-	// testinvoke f6329adf3ad3f0028b2c9ea63a3247ab51710bed addReview ['AK2nJJpJr6o664CWJKi1QRXjqeic2zRp8y', '55526d13aa05b8c6f69b31028e11618351a68175', '9', 'Very good']
-	// testinvoke f6329adf3ad3f0028b2c9ea63a3247ab51710bed getReview ['AK2nJJpJr6o664CWJKi1QRXjqeic2zRp8y', '55526d13aa05b8c6f69b31028e11618351a68175']
-	// testinvoke f6329adf3ad3f0028b2c9ea63a3247ab51710bed editReview ['AK2nJJpJr6o664CWJKi1QRXjqeic2zRp8y', '55526d13aa05b8c6f69b31028e11618351a68175', '1', 'Not really good']
-	// testinvoke f6329adf3ad3f0028b2c9ea63a3247ab51710bed getNumberOfReviewsFrom ['AK2nJJpJr6o664CWJKi1QRXjqeic2zRp8y']
-	// testinvoke f6329adf3ad3f0028b2c9ea63a3247ab51710bed getNumberOfReviewsFor ['55526d13aa05b8c6f69b31028e11618351a68175']
-	// testinvoke f6329adf3ad3f0028b2c9ea63a3247ab51710bed getReviewFromAddress ['AK2nJJpJr6o664CWJKi1QRXjqeic2zRp8y', '1']
+	// testinvoke 4e0f097c104436ff49e8a9b6a770b8833f8429f3 addReview ['AK2nJJpJr6o664CWJKi1QRXjqeic2zRp8y', '55526d13aa05b8c6f69b31028e11618351a68175', '9', 'Very good']
+	// testinvoke 4e0f097c104436ff49e8a9b6a770b8833f8429f3 getReview ['AK2nJJpJr6o664CWJKi1QRXjqeic2zRp8y', '55526d13aa05b8c6f69b31028e11618351a68175']
+	// testinvoke 4e0f097c104436ff49e8a9b6a770b8833f8429f3 editReview ['AK2nJJpJr6o664CWJKi1QRXjqeic2zRp8y', '55526d13aa05b8c6f69b31028e11618351a68175', '1', 'Not really good']
+	// testinvoke 4e0f097c104436ff49e8a9b6a770b8833f8429f3 getNumberOfReviewsFrom ['AK2nJJpJr6o664CWJKi1QRXjqeic2zRp8y']
+	// testinvoke 4e0f097c104436ff49e8a9b6a770b8833f8429f3 getNumberOfReviewsFor ['55526d13aa05b8c6f69b31028e11618351a68175']
+	// testinvoke 4e0f097c104436ff49e8a9b6a770b8833f8429f3 getReviewFromAddress ['AK2nJJpJr6o664CWJKi1QRXjqeic2zRp8y', '1']
+    //
+	// testinvoke 4e0f097c104436ff49e8a9b6a770b8833f8429f3 addToken ['7f86d61ff377f1b12e589a5907152b57e2ad9a7a', 'ACAT Token', 'ACAT', '6250000000', 'QmTrjRYLwdFSG66sRMMRc5eVkrjwLXRnMfGBssKWoSoSVg']
+	// testinvoke 4e0f097c104436ff49e8a9b6a770b8833f8429f3 editToken ['7f86d61ff377f1b12e589a5907152b57e2ad9a7a', 'ACAT Token edit', 'ACAT edit', '7250000000', 'QmTrjRYLwdFSG66sRMMRc5eVkrjwLXRnMfGBssKWoSoSVg']
+	// testinvoke 4e0f097c104436ff49e8a9b6a770b8833f8429f3 getToken ['7f86d61ff377f1b12e589a5907152b57e2ad9a7a']
+	// testinvoke 4e0f097c104436ff49e8a9b6a770b8833f8429f3 getNumberOfTokens []
+
 
     // Contract owner key   
 	public static readonly byte[] contractOwnerAddress = "AK2nJJpJr6o664CWJKi1QRXjqeic2zRp8y".ToScriptHash();
@@ -23,7 +29,7 @@ public class ScriptHashReview : SmartContract
 	private static StorageContext Context() => Storage.CurrentContext;
 
  
-	// Keys
+	// Review Keys
 	private static byte[] ReviewKey(byte[] address, byte[] scriptHash) => address.Concat(scriptHash);
  
 	private static byte[] NumberOfReviewsFromAddressKey(byte[] address) => ("NBREVIEWSFROM".AsByteArray()).Concat(address);
@@ -31,6 +37,11 @@ public class ScriptHashReview : SmartContract
 
 	private static byte[] ReviewFromAddressKey(byte[] address, byte[] count) => ("REVIEWFROM".AsByteArray()).Concat(address).Concat(count);         //value = ReviewKey(address, scriptHash)
 	private static byte[] ReviewForScriptHashKey(byte[] scriptHash, byte[] count) => ("REVIEWFOR".AsByteArray()).Concat(scriptHash).Concat(count);  //value = ReviewKey(address, scriptHash)
+
+    // Token Keys
+	private static byte[] TokenKey(byte[] scriptHash) => ("TOKEN".AsByteArray()).Concat(scriptHash);
+
+	private static byte[] NumberOfTokensKey() => "NBTOKENS".AsByteArray();
 
 
 	public static Object Main(string operation, params object[] args)
@@ -117,10 +128,65 @@ public class ScriptHashReview : SmartContract
 
 				return GetReviewForScriptHash(scriptHash, number);
             }
+
+            //Admin part for the tokens
+			if (!Runtime.CheckWitness(contractOwnerAddress)) { return false; }
+
+			if (operation == "addToken") 
+			{
+				if (args.Length != 5) { return false; }
+
+				Token token = new Token();
+
+				token.scriptHash = (byte[])args[0];
+				token.name = (String)args[1];
+				token.symbol = (String)args[2];
+				token.supply = (BigInteger)args[3];
+				token.IPFSHash = (String)args[4];
+
+				return AddToken(token);
+			}
+			if (operation == "editToken")
+			{
+				if (args.Length != 5) { return false; }
+
+                Token newToken = new Token();
+
+				newToken.scriptHash = (byte[])args[0];
+				newToken.name = (String)args[1];
+				newToken.symbol = (String)args[2];
+				newToken.supply = (BigInteger)args[3];
+				newToken.IPFSHash = (String)args[4];
+
+				return EditToken(newToken);
+			}
+			if (operation == "deleteToken")
+			{
+				//if (args.Length != 1) { return false; }
+
+				//byte[] scriptHash = (byte[])args[0];
+
+				//return DeleteToken(scriptHash);
+			}
+            if (operation == "getToken")
+			{
+				if (args.Length != 1) { return false; }
+
+                byte[] scriptHash = (byte[])args[0];
+
+				return GetToken(scriptHash);	
+			}
+
+			if (operation == "getNumberOfTokens")
+			{
+				return GetNumberOfTokens();
+			}
 		}
 
 		return false;      
     }
+
+    // Review
 
 	public static bool AddReview(Review review)
 	{
@@ -134,6 +200,18 @@ public class ScriptHashReview : SmartContract
 			return false; 
 		}
       
+        // Check if a token with this scripthash exists. You can only post reviews for existing tokens
+		byte[] tokenKey = TokenKey(review.scriptHash);
+		byte[] serializedToken = Storage.Get(Context(), tokenKey);
+
+        // Check if there is a token with this script hash in the storage
+        if (serializedToken.Length < 1)
+        {
+            Runtime.Log("You can't add a review for a script hash not associated to a token.");
+            return false;
+        }
+
+        // Check if the review is correct
 		if (!IsReviewOK(review)) { return false; }
 
         // Store the review
@@ -284,6 +362,78 @@ public class ScriptHashReview : SmartContract
 		return true;
 	}
 
+    // Token
+
+	public static bool AddToken(Token token)
+	{
+        // Check if there is already a token with this script hash in the storage
+		byte[] tokenKey = TokenKey(token.scriptHash);
+        byte[] checkToken = Storage.Get(Context(), tokenKey);
+
+        // Check if there is a token with this script hash in the storage
+		if (checkToken.Length > 1)
+        {
+            Runtime.Log("A token with this script hash already exists.");
+            return false;
+        }
+
+        // Store the token
+        byte[] serializedToken = Neo.SmartContract.Framework.Helper.Serialize(token);
+
+        Storage.Put(Context(), tokenKey, serializedToken);
+
+
+		// Increment the number of tokens
+		BigInteger currentNumberOfTokens = GetNumberOfTokens();
+		byte[] newNumberOfTokens = (currentNumberOfTokens + 1).AsByteArray();
+
+		Storage.Put(Context(), NumberOfReviewsFromAddressKey(NumberOfTokensKey()), newNumberOfTokens);
+
+		return true;
+	}
+
+	public static bool EditToken(Token newToken)
+    {
+		byte[] tokenKey = TokenKey(newToken.scriptHash);
+		byte[] previousSerializedToken = Storage.Get(Context(), tokenKey);
+
+		if (previousSerializedToken.Length < 1) 
+		{
+			Runtime.Log("This token doesn't exist");
+			return false; 
+		}
+
+        // Update the token
+		byte[] serializedNewToken = Neo.SmartContract.Framework.Helper.Serialize(newToken);
+
+		Storage.Put(Context(), tokenKey, serializedNewToken);
+        
+        return true;
+    }
+
+	public static object GetToken(byte[] scriptHash)
+	{
+		byte[] key = TokenKey(scriptHash);
+        byte[] serializedToken = Storage.Get(Context(), key);
+
+        if (serializedToken.Length < 1) { return false; }
+
+		Token token = (Token)Neo.SmartContract.Framework.Helper.Deserialize(serializedToken);
+
+		return token;
+	}
+        
+
+	public static BigInteger GetNumberOfTokens()
+	{
+		byte[] key = NumberOfTokensKey();
+		byte[] numberOfTokens = Storage.Get(Context(), key);
+
+		return numberOfTokens.AsBigInteger();
+	}
+
+    // Serializable
+
 	[Serializable]
 	public class Review
 	{
@@ -292,4 +442,14 @@ public class ScriptHashReview : SmartContract
 		public BigInteger rating;
 		public String comment;	
 	}
+
+	[Serializable]
+    public class Token
+    {
+        public byte[] scriptHash;
+		public String name;
+		public String symbol;
+        public BigInteger supply;
+		public String IPFSHash;
+    }
 }
