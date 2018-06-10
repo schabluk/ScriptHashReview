@@ -1,0 +1,12 @@
+.get-review {
+  flex: 1;
+  margin-bottom: 1rem !important;
+}
+
+.get-review .ant-card-meta-description {
+  font-size: 16px;
+}
+
+.get-review .ant-card-extra {
+  padding: 13px 0;
+}
