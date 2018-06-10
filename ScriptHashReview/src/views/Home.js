@@ -18,8 +18,6 @@ class Home extends React.Component {
   render () {
     const { tokens, tokenIndex, reviews } = this.props
 
-    console.log(reviews)
-
     return (
       <div className='home'>
         <h3 className='jumbotron'>
