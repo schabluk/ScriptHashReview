@@ -29,6 +29,9 @@ axios.interceptors.response.use(({data}) => data)
  */
 const contractHash = 'f6329adf3ad3f0028b2c9ea63a3247ab51710bed'
 
+/*
+ * Service Bus.
+ */
 const Service = {
   // Tokens API.
   notifications: {
@@ -43,7 +46,6 @@ const Service = {
   // Smart Contract API.
   contract: {
     async invoke (args, operation) {
-      console.log('invoke', {scriptHash: contractHash, operation, args})
       try {
         return await nOS.testInvoke({scriptHash: contractHash, operation, args})
       } catch (error) {
@@ -67,6 +69,9 @@ const Service = {
     },
     getReviewFromAddress (reviewOwner, number) {
       return this.invoke(Array.from(arguments), 'getReviewFromAddress')
+    },
+    getToken (number) {
+      return this.invoke(Array.from(arguments), 'getToken')
     },
   },
   // nOS native API.
