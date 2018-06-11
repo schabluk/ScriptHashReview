@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 
 import AddReview from './../components/AddReview'
 import GetReview from './../components/GetReview'
+import Placeholder from "./../components/Placeholder";
+
 
 import './Home.css'
 
@@ -29,6 +31,11 @@ class Home extends React.Component {
         </div>
         <div className='media'>
           <div style={{flex: 1}}>
+            {
+              !reviews.length && Array.from({length: 5}).map((v, i) => {
+                return <Placeholder key={i} />
+              })
+            }
             {
               reviews.map((review, key) => <GetReview key={key} {...review} />)
             }
