@@ -1,6 +1,7 @@
 .get-review {
   flex: 1;
   margin-bottom: 1rem !important;
+  min-height: 200px;
 }
 
 .get-review .ant-card-meta-description {
