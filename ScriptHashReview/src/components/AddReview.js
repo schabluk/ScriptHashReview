@@ -72,7 +72,7 @@ class AddReview extends React.Component {
     const activeValue = activeToken && activeToken.hash
 
     return (
-      <Card title='Add Review' className='add-review'>
+      <Card title='Add Review' className='add-review' bordered={false}>
         <Form onSubmit={this.handleSubmit}>
           <FormItem {...formItemLayout} label='Token' hasFeedback>
             {getFieldDecorator('hash', {

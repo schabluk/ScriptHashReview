@@ -5,10 +5,7 @@ import "./Placeholder.css";
 
 const Placeholder = props => (
   <div className="ant-card get-review">
-    <div
-      className={"placeholder animatedBackground"}
-      style={{ height: "200px" }}
-    >
+    <div className={"animatedBackground"} style={{ height: "200px" }}>
       <div
         className={"ant-card-head backgroundMasker"}
         style={{ height: 57, top: 0, left: 0, right: 0 }}
@@ -19,7 +16,7 @@ const Placeholder = props => (
       </div>
       <div
         className={"cropper"}
-        style={{ height: 141, top: 57, left: 0, width: 70 }}
+        style={{ height: 143, top: 57, left: 0, width: 70 }}
       >
         <div
           className={"avatar animatedBackground"}
@@ -44,7 +41,7 @@ const Placeholder = props => (
       />
       <div
         className={"backgroundMasker"}
-        style={{ height: 18, top: 180, left: 70, right: 24 }}
+        style={{ height: 20, top: 180, left: 70, right: 24 }}
       />
       <div
         className={"backgroundMasker"}
@@ -52,7 +49,7 @@ const Placeholder = props => (
       />
       <div
         className={"backgroundMasker"}
-        style={{ height: 141, top: 57, width: 24, right: 0 }}
+        style={{ height: 143, top: 57, width: 24, right: 0 }}
       />
     </div>
   </div>
