@@ -1,5 +1,5 @@
 {
-    "hash":"0x4e0f097c104436ff49e8a9b6a770b8833f8429f3",
+    "hash":"0x6faccce567a901b72d30a832fd126efd07061bb5",
     "entrypoint":"Main",
     "functions":
     [
@@ -156,12 +156,34 @@
             "returntype":"Boolean"
         },
         {
+            "name":"DeleteToken",
+            "parameters":
+            [
+                {
+                    "name":"index",
+                    "type":"Integer"
+                }
+            ],
+            "returntype":"Boolean"
+        },
+        {
             "name":"GetToken",
             "parameters":
             [
                 {
                     "name":"scriptHash",
                     "type":"ByteArray"
+                }
+            ],
+            "returntype":"Any"
+        },
+        {
+            "name":"GetTokenFromIndex",
+            "parameters":
+            [
+                {
+                    "name":"index",
+                    "type":"Integer"
                 }
             ],
             "returntype":"Any"
