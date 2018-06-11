@@ -19,7 +19,7 @@ const Placeholder = props => (
       </div>
       <div
         className={"cropper"}
-        style={{ height: 142, top: 57, left: 0, width: 70 }}
+        style={{ height: 141, top: 57, left: 0, width: 70 }}
       >
         <div
           className={"avatar animatedBackground"}
@@ -44,7 +44,7 @@ const Placeholder = props => (
       />
       <div
         className={"backgroundMasker"}
-        style={{ height: 18, top: 181, left: 70, right: 24 }}
+        style={{ height: 18, top: 180, left: 70, right: 24 }}
       />
       <div
         className={"backgroundMasker"}
@@ -52,7 +52,7 @@ const Placeholder = props => (
       />
       <div
         className={"backgroundMasker"}
-        style={{ height: 142, top: 57, width: 24, right: 0 }}
+        style={{ height: 141, top: 57, width: 24, right: 0 }}
       />
     </div>
   </div>
