@@ -1,5 +1,5 @@
 {
-    "hash":"0x92da31be96c37d89bfa8031ae1eb253dcd4d2e08",
+    "hash":"0x4e0f097c104436ff49e8a9b6a770b8833f8429f3",
     "entrypoint":"Main",
     "functions":
     [
@@ -132,6 +132,46 @@
                 }
             ],
             "returntype":"Boolean"
+        },
+        {
+            "name":"AddToken",
+            "parameters":
+            [
+                {
+                    "name":"token",
+                    "type":"Unknown:ScriptHashReview/Token"
+                }
+            ],
+            "returntype":"Boolean"
+        },
+        {
+            "name":"EditToken",
+            "parameters":
+            [
+                {
+                    "name":"newToken",
+                    "type":"Unknown:ScriptHashReview/Token"
+                }
+            ],
+            "returntype":"Boolean"
+        },
+        {
+            "name":"GetToken",
+            "parameters":
+            [
+                {
+                    "name":"scriptHash",
+                    "type":"ByteArray"
+                }
+            ],
+            "returntype":"Any"
+        },
+        {
+            "name":"GetNumberOfTokens",
+            "parameters":
+            [
+            ],
+            "returntype":"Integer"
         }
     ],
     "events":
