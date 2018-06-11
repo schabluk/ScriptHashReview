@@ -46,7 +46,7 @@ class App extends React.Component {
     afterChange: index => {
       const { service: { contract: api } } = this.props
 
-      this.setState({tokenIndex: index}, () => {
+      this.setState({tokenIndex: index, reviews: []}, () => {
         const { hash } = this.selectedToken
 
         api.getReviews(hash).then(reviews => this.setState({reviews}))
