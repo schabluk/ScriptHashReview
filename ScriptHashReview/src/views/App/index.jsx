@@ -8,6 +8,7 @@ import Slider from 'react-slick'
 import ImageLoader from './../../components/ImageLoader'
 import Home from '../Home'
 import NotFound from '../NotFound'
+import debounce from '../../utils/debounce'
 
 import 'antd/dist/antd.css'
 import 'slick-carousel/slick/slick.css'
@@ -44,15 +45,22 @@ class App extends React.Component {
     focusOnSelect: true,
     initialSlide: this.state.tokenIndex,
     afterChange: index => {
-      const { service: { contract: api } } = this.props
-
-      this.setState({tokenIndex: index, reviews: []}, () => {
-        const { hash } = this.selectedToken
-
-        api.getReviews(hash).then(reviews => this.setState({reviews}))
-      })
+      this.setState({tokenIndex: index}, this.fetchReviews)
     }
   }
+
+  fetchReviews = debounce(() => {
+    const { service: { contract: api } } = this.props
+    const { hash } = this.selectedToken
+
+    this.setState({reviews: []}, () => {
+      api.getReviews(hash).then(reviews => this.setState({reviews}))
+    })
+  }, 1000)
+
+  // fetchReviews = (hash) => {
+  //   console.log('fetch reviews')
+  // }
 
   componentWillMount () {
     const { service: { contract: api } } = this.props
