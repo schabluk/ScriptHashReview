@@ -40,7 +40,9 @@ class Home extends React.Component {
               reviews.map((review, key) => <GetReview key={key} {...review} />)
             }
           </div>
-          <AddReview tokens={tokens} active={tokenIndex} />
+          <div style={{flex: 1}}>
+            <AddReview tokens={tokens} active={tokenIndex} />
+          </div>
         </div>
       </div>
     )
