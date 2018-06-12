@@ -180,22 +180,14 @@ public class ScriptHashReview : SmartContract
 		if (!Runtime.CheckWitness(review.reviewOwner)) { return false; }
 
 		// An address can only post 1 review per scriptHash
-		if (Storage.Get(Context(), ReviewKey(review.reviewOwner, review.scriptHash)).Length > 0) 
-		{
-			Runtime.Log("This address has already posted a review for this scripthash");
-			return false; 
-		}
+		if (Storage.Get(Context(), ReviewKey(review.reviewOwner, review.scriptHash)).Length > 0) { return false; }
       
         // Check if a token with this scripthash exists. You can only post reviews for existing tokens
 		byte[] tokenKey = TokenKey(review.scriptHash);
 		byte[] serializedToken = Storage.Get(Context(), tokenKey);
 
         // Check if there is a token with this script hash in the storage
-        if (serializedToken.Length < 1)
-        {
-            Runtime.Log("You can't add a review for a script hash not associated to a token.");
-            return false;
-        }
+        if (serializedToken.Length < 1) { return false; }
 
         // Check if the review is correct
 		if (!IsReviewOK(review)) { return false; }
@@ -239,18 +231,10 @@ public class ScriptHashReview : SmartContract
 		// Check if the caller address is the same as review owner's address
 		Review previousDeserializedReview = (Review)Neo.SmartContract.Framework.Helper.Deserialize(previousSerializedReview);
 
-		if (previousDeserializedReview.reviewOwner != review.reviewOwner)
-		{
-			Runtime.Notify("You can only edit your reviews.");
-			return false;
-		}
+		if (previousDeserializedReview.reviewOwner != review.reviewOwner) { return false; }
 
-        // You can only change the rating and the comment of the review
-		if (previousDeserializedReview.reviewOwner != review.reviewOwner || previousDeserializedReview.scriptHash != review.scriptHash)
-		{
-			Runtime.Notify("You can only edit the rating and the comment of the review.");
-            return false;
-		}
+		// You can only change the rating and the comment of the review
+		if (previousDeserializedReview.reviewOwner != review.reviewOwner || previousDeserializedReview.scriptHash != review.scriptHash) { return false; }
 
 		if (!IsReviewOK(review)) { return false; }
         
@@ -340,12 +324,8 @@ public class ScriptHashReview : SmartContract
 		byte[] tokenKey = TokenKey(token.scriptHash);
         byte[] checkToken = Storage.Get(Context(), tokenKey);
 
-        // Check if there is a token with this script hash in the storage
-		if (checkToken.Length > 1)
-        {
-            Runtime.Log("A token with this script hash already exists.");
-            return false;
-        }
+		// Check if there is a token with this script hash in the storage
+		if (checkToken.Length > 1) { return false; }
 
         // Store the token
         byte[] serializedToken = Neo.SmartContract.Framework.Helper.Serialize(token);
@@ -371,11 +351,7 @@ public class ScriptHashReview : SmartContract
 		byte[] tokenKey = TokenKey(newToken.scriptHash);
 		byte[] previousSerializedToken = Storage.Get(Context(), tokenKey);
 
-		if (previousSerializedToken.Length < 1) 
-		{
-			Runtime.Log("This token doesn't exist");
-			return false; 
-		}
+		if (previousSerializedToken.Length < 1) { return false; }
 
         // Update the token
 		byte[] serializedNewToken = Neo.SmartContract.Framework.Helper.Serialize(newToken);
