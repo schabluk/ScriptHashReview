@@ -1,51 +1,41 @@
 ﻿using Neo.SmartContract.Framework;
 using Neo.SmartContract.Framework.Services.Neo;
-using Neo.SmartContract.Framework.Services.System;
 using System;
-using System.ComponentModel;
 using System.Numerics;
 
 public class ScriptHashReview : SmartContract
 {
 	//https://peterlinx.github.io/DataTransformationTools/
 
-	// testinvoke 88d4743e3c7936b4b7811ad980e414e114374f35 addReview ['AK2nJJpJr6o664CWJKi1QRXjqeic2zRp8y', '7f86d61ff377f1b12e589a5907152b57e2ad9a7a', '9', 'Very good']
-	// testinvoke 88d4743e3c7936b4b7811ad980e414e114374f35 getReview ['AK2nJJpJr6o664CWJKi1QRXjqeic2zRp8y', '7f86d61ff377f1b12e589a5907152b57e2ad9a7a']
-	// testinvoke 88d4743e3c7936b4b7811ad980e414e114374f35 editReview ['AK2nJJpJr6o664CWJKi1QRXjqeic2zRp8y', '7f86d61ff377f1b12e589a5907152b57e2ad9a7a', '1', 'Not really good']
-	// testinvoke 88d4743e3c7936b4b7811ad980e414e114374f35 getNumberOfReviewsFor ['7f86d61ff377f1b12e589a5907152b57e2ad9a7a']
-	// testinvoke 88d4743e3c7936b4b7811ad980e414e114374f35 getReviewForScriptHash ['7f86d61ff377f1b12e589a5907152b57e2ad9a7a', '1']
+	// testinvoke 96c96e9aec55af45359c1d694a0c4605d8bc1e91 addReview ['AK2nJJpJr6o664CWJKi1QRXjqeic2zRp8y', '7f86d61ff377f1b12e589a5907152b57e2ad9a7a', '9', 'Very good']
+	// testinvoke 96c96e9aec55af45359c1d694a0c4605d8bc1e91 getReview ['AK2nJJpJr6o664CWJKi1QRXjqeic2zRp8y', '7f86d61ff377f1b12e589a5907152b57e2ad9a7a']
+	// testinvoke 96c96e9aec55af45359c1d694a0c4605d8bc1e91 editReview ['AK2nJJpJr6o664CWJKi1QRXjqeic2zRp8y', '7f86d61ff377f1b12e589a5907152b57e2ad9a7a', '1', 'Not really good']
+	// testinvoke 96c96e9aec55af45359c1d694a0c4605d8bc1e91 deleteReview ['7f86d61ff377f1b12e589a5907152b57e2ad9a7a', '1']
+	// testinvoke 96c96e9aec55af45359c1d694a0c4605d8bc1e91 getNumberOfReviewsFor ['7f86d61ff377f1b12e589a5907152b57e2ad9a7a']
+	// testinvoke 96c96e9aec55af45359c1d694a0c4605d8bc1e91 getReviewForScriptHash ['7f86d61ff377f1b12e589a5907152b57e2ad9a7a', '1']
     
-	// testinvoke 88d4743e3c7936b4b7811ad980e414e114374f35 addToken ['7f86d61ff377f1b12e589a5907152b57e2ad9a7a', 'ACAT Token', 'ACAT', '6250000000', 'QmTrjRYLwdFSG66sRMMRc5eVkrjwLXRnMfGBssKWoSoSVg']
-	// testinvoke 6faccce567a901b72d30a832fd126efd07061bb5 editToken ['7f86d61ff377f1b12e589a5907152b57e2ad9a7a', 'ACAT Token edit', 'ACAT edit', '7250000000', 'QmTrjRYLwdFSG66sRMMRc5eVkrjwLXRnMfGBssKWoSoSVg']
-	// testinvoke 6faccce567a901b72d30a832fd126efd07061bb5 deleteToken ['2']
-	// testinvoke 6faccce567a901b72d30a832fd126efd07061bb5 getToken ['CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC']
-	// testinvoke 6faccce567a901b72d30a832fd126efd07061bb5 getNumberOfTokens []
-	// testinvoke 6faccce567a901b72d30a832fd126efd07061bb5 getTokenFromIndex ['1']
-
-
+	// testinvoke 96c96e9aec55af45359c1d694a0c4605d8bc1e91 addToken ['7f86d61ff377f1b12e589a5907152b57e2ad9a7a', 'ACAT Token', 'ACAT', '6250000000', 'QmTrjRYLwdFSG66sRMMRc5eVkrjwLXRnMfGBssKWoSoSVg']
+	// testinvoke 96c96e9aec55af45359c1d694a0c4605d8bc1e91 editToken ['7f86d61ff377f1b12e589a5907152b57e2ad9a7a', 'ACAT Token edit', 'ACAT edit', '7250000000', 'QmTrjRYLwdFSG66sRMMRc5eVkrjwLXRnMfGBssKWoSoSVg']
+	// testinvoke 96c96e9aec55af45359c1d694a0c4605d8bc1e91 deleteToken ['1']
+	// testinvoke 96c96e9aec55af45359c1d694a0c4605d8bc1e91 getToken ['7f86d61ff377f1b12e589a5907152b57e2ad9a7a']
+	// testinvoke 96c96e9aec55af45359c1d694a0c4605d8bc1e91 getNumberOfTokens []
+	// testinvoke 96c96e9aec55af45359c1d694a0c4605d8bc1e91 getTokenFromIndex ['1']
+    
     // Contract owner key   
 	public static readonly byte[] contractOwnerAddress = "AK2nJJpJr6o664CWJKi1QRXjqeic2zRp8y".ToScriptHash();
 
     // Utilities
 	private static StorageContext Context() => Storage.CurrentContext;
-
- 
+     
 	// Review Keys
 	private static byte[] ReviewKey(byte[] address, byte[] scriptHash) => address.Concat(scriptHash);
- 
-	private static byte[] NumberOfReviewsFromAddressKey(byte[] address) => ("NBREVIEWSFROM".AsByteArray()).Concat(address);
 	private static byte[] NumberOfReviewsForScriptHashKey(byte[] scriptHash) => ("NBREVIEWSFOR".AsByteArray()).Concat(scriptHash);
-
-	private static byte[] ReviewFromAddressKey(byte[] address, byte[] count) => ("REVIEWFROM".AsByteArray()).Concat(address).Concat(count);         //value = ReviewKey(address, scriptHash)
 	private static byte[] ReviewForScriptHashKey(byte[] scriptHash, byte[] count) => ("REVIEWFOR".AsByteArray()).Concat(scriptHash).Concat(count);  //value = ReviewKey(address, scriptHash)
 
     // Token Keys
 	private static byte[] TokenKey(byte[] scriptHash) => ("TOKEN".AsByteArray()).Concat(scriptHash);
-  
 	private static byte[] NumberOfTokensKey() => "NBTOKENS".AsByteArray();
-
 	private static byte[] TokenIndexKey(byte[] index) => ("TOKENINDEX".AsByteArray()).Concat(index);
-
 
 	public static Object Main(string operation, params object[] args)
     {
@@ -272,24 +262,44 @@ public class ScriptHashReview : SmartContract
         return true;
 	}
     
-	public static bool DeleteReview(byte[] reviewOwner, BigInteger index)
+	public static bool DeleteReview(byte[] scriptHash, BigInteger index)
 	{
-		if (!Runtime.CheckWitness(reviewOwner) || !Runtime.CheckWitness(contractOwnerAddress)) { return false; }
+		if (index <= 0) { return false; }
 
-		//byte[] key = ReviewKey(address, scriptHash);
+		// Get the number of reviews for the script hash
+		BigInteger numberOfReviewForScriptHash = GetNumberOfReviewsFor(scriptHash);
 
-        // Check if the review exists before deleting it?
+		if (index > numberOfReviewForScriptHash) { return false; }
 
-        // Also delete from list of review for script hash and list of review from address
+        // Retrieve the review
+		Review reviewFromIndex = (Review)GetReviewForScriptHash(scriptHash, index.AsByteArray());
+        
+        // Make sure only the review owner or the admins can delete the review
+		if (!Runtime.CheckWitness(reviewFromIndex.reviewOwner) || !Runtime.CheckWitness(contractOwnerAddress)) { return false; }
 
-		//Storage.Delete(Context(), key);
+		// Copy the last review for the scripthash
+		Review lastReviewForScriptHash = (Review)GetReviewForScriptHash(scriptHash, numberOfReviewForScriptHash.AsByteArray());
 
+		// Delete the review from the storage
+		Storage.Delete(Context(), ReviewKey(reviewFromIndex.reviewOwner, scriptHash));
+		Storage.Delete(Context(), ReviewForScriptHashKey(scriptHash, index.AsByteArray()));
+
+        // Decrement the number of review for this script hash      
+		byte[] newNumberOfReviewsForScriptHash = (numberOfReviewForScriptHash - 1).AsByteArray();
+		Storage.Put(Context(), NumberOfReviewsForScriptHashKey(scriptHash), newNumberOfReviewsForScriptHash);
+
+		// Move last value to the removed index if we don't remove the last token in the index
+		if (index != numberOfReviewForScriptHash)
+        {
+			Storage.Put(Context(), ReviewForScriptHashKey(scriptHash, index.AsByteArray()), ReviewKey(lastReviewForScriptHash.reviewOwner, lastReviewForScriptHash.scriptHash));
+        }
+        
 		return true;
 	}
 
-	public static object GetReviewForScriptHash(byte[] scriptHash, byte[] number)
+	public static object GetReviewForScriptHash(byte[] scriptHash, byte[] index)
     {
-		byte[] key = ReviewForScriptHashKey(scriptHash, number);
+		byte[] key = ReviewForScriptHashKey(scriptHash, index);
         byte[] reviewKey = Storage.Get(Context(), key);
 
         if (reviewKey.Length < 1) { return false; }
