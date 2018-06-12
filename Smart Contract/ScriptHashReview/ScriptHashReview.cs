@@ -9,17 +9,19 @@ public class ScriptHashReview : SmartContract
 {
 	//https://peterlinx.github.io/DataTransformationTools/
 
-	// testinvoke 4e0f097c104436ff49e8a9b6a770b8833f8429f3 addReview ['AK2nJJpJr6o664CWJKi1QRXjqeic2zRp8y', '55526d13aa05b8c6f69b31028e11618351a68175', '9', 'Very good']
-	// testinvoke 4e0f097c104436ff49e8a9b6a770b8833f8429f3 getReview ['AK2nJJpJr6o664CWJKi1QRXjqeic2zRp8y', '55526d13aa05b8c6f69b31028e11618351a68175']
-	// testinvoke 4e0f097c104436ff49e8a9b6a770b8833f8429f3 editReview ['AK2nJJpJr6o664CWJKi1QRXjqeic2zRp8y', '55526d13aa05b8c6f69b31028e11618351a68175', '1', 'Not really good']
-	// testinvoke 4e0f097c104436ff49e8a9b6a770b8833f8429f3 getNumberOfReviewsFrom ['AK2nJJpJr6o664CWJKi1QRXjqeic2zRp8y']
-	// testinvoke 4e0f097c104436ff49e8a9b6a770b8833f8429f3 getNumberOfReviewsFor ['55526d13aa05b8c6f69b31028e11618351a68175']
-	// testinvoke 4e0f097c104436ff49e8a9b6a770b8833f8429f3 getReviewFromAddress ['AK2nJJpJr6o664CWJKi1QRXjqeic2zRp8y', '1']
+	// testinvoke 6faccce567a901b72d30a832fd126efd07061bb5 addReview ['AK2nJJpJr6o664CWJKi1QRXjqeic2zRp8y', '7f86d61ff377f1b12e589a5907152b57e2ad9a7a', '9', 'Very good']
+	// testinvoke 6faccce567a901b72d30a832fd126efd07061bb5 getReview ['AK2nJJpJr6o664CWJKi1QRXjqeic2zRp8y', '7f86d61ff377f1b12e589a5907152b57e2ad9a7a']
+	// testinvoke 6faccce567a901b72d30a832fd126efd07061bb5 editReview ['AK2nJJpJr6o664CWJKi1QRXjqeic2zRp8y', '7f86d61ff377f1b12e589a5907152b57e2ad9a7a', '1', 'Not really good']
+	// testinvoke 6faccce567a901b72d30a832fd126efd07061bb5 getNumberOfReviewsFrom ['AK2nJJpJr6o664CWJKi1QRXjqeic2zRp8y']
+	// testinvoke 6faccce567a901b72d30a832fd126efd07061bb5 getNumberOfReviewsFor ['55526d13aa05b8c6f69b31028e11618351a68175']
+	// testinvoke 6faccce567a901b72d30a832fd126efd07061bb5 getReviewFromAddress ['AK2nJJpJr6o664CWJKi1QRXjqeic2zRp8y', '1']
     //
-	// testinvoke 4e0f097c104436ff49e8a9b6a770b8833f8429f3 addToken ['7f86d61ff377f1b12e589a5907152b57e2ad9a7a', 'ACAT Token', 'ACAT', '6250000000', 'QmTrjRYLwdFSG66sRMMRc5eVkrjwLXRnMfGBssKWoSoSVg']
-	// testinvoke 4e0f097c104436ff49e8a9b6a770b8833f8429f3 editToken ['7f86d61ff377f1b12e589a5907152b57e2ad9a7a', 'ACAT Token edit', 'ACAT edit', '7250000000', 'QmTrjRYLwdFSG66sRMMRc5eVkrjwLXRnMfGBssKWoSoSVg']
-	// testinvoke 4e0f097c104436ff49e8a9b6a770b8833f8429f3 getToken ['7f86d61ff377f1b12e589a5907152b57e2ad9a7a']
-	// testinvoke 4e0f097c104436ff49e8a9b6a770b8833f8429f3 getNumberOfTokens []
+	// testinvoke 6faccce567a901b72d30a832fd126efd07061bb5 addToken ['7f86d61ff377f1b12e589a5907152b57e2ad9a7a', 'ACAT Token', 'ACAT', '6250000000', 'QmTrjRYLwdFSG66sRMMRc5eVkrjwLXRnMfGBssKWoSoSVg']
+	// testinvoke 6faccce567a901b72d30a832fd126efd07061bb5 editToken ['7f86d61ff377f1b12e589a5907152b57e2ad9a7a', 'ACAT Token edit', 'ACAT edit', '7250000000', 'QmTrjRYLwdFSG66sRMMRc5eVkrjwLXRnMfGBssKWoSoSVg']
+	// testinvoke 6faccce567a901b72d30a832fd126efd07061bb5 deleteToken ['2']
+	// testinvoke 6faccce567a901b72d30a832fd126efd07061bb5 getToken ['CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC']
+	// testinvoke 6faccce567a901b72d30a832fd126efd07061bb5 getNumberOfTokens []
+	// testinvoke 6faccce567a901b72d30a832fd126efd07061bb5 getTokenFromIndex ['1']
 
 
     // Contract owner key   
@@ -40,8 +42,10 @@ public class ScriptHashReview : SmartContract
 
     // Token Keys
 	private static byte[] TokenKey(byte[] scriptHash) => ("TOKEN".AsByteArray()).Concat(scriptHash);
-
+  
 	private static byte[] NumberOfTokensKey() => "NBTOKENS".AsByteArray();
+
+	private static byte[] TokenIndexKey(byte[] index) => ("TOKENINDEX".AsByteArray()).Concat(index);
 
 
 	public static Object Main(string operation, params object[] args)
@@ -62,7 +66,7 @@ public class ScriptHashReview : SmartContract
 				Review review = new Review();
 
 				review.reviewOwner = (byte[])args[0];
-                review.scriptHash = (byte[])args[1];
+				review.scriptHash = (byte[])args[1];
 				review.rating = (BigInteger)args[2];
 				review.comment = (String)args[3];
 
@@ -76,24 +80,24 @@ public class ScriptHashReview : SmartContract
 				byte[] scriptHash = (byte[])args[1];
 
 				return GetReview(address, scriptHash);
-			}         
+			}
 			if (operation == "editReview")
-            {
+			{
 				if (args.Length != 4) { return false; }
 
-                Review review = new Review();
+				Review review = new Review();
 
-                review.reviewOwner = (byte[])args[0];
-                review.scriptHash = (byte[])args[1];
-                review.rating = (BigInteger)args[2];
-                review.comment = (String)args[3];
+				review.reviewOwner = (byte[])args[0];
+				review.scriptHash = (byte[])args[1];
+				review.rating = (BigInteger)args[2];
+				review.comment = (String)args[3];
 
-                return EditReview(review);
-            }
+				return EditReview(review);
+			}
 			if (operation == "deleteReview")
 			{
-				
-			}        
+
+			}
 			if (operation == "getNumberOfReviewsFrom")
 			{
 				if (args.Length != 1) { return false; }
@@ -105,8 +109,8 @@ public class ScriptHashReview : SmartContract
 			if (operation == "getNumberOfReviewsFor")
 			{
 				if (args.Length != 1) { return false; }
-                
-                byte[] scriptHash = (byte[])args[0];
+
+				byte[] scriptHash = (byte[])args[0];
 
 				return GetNumberOfReviewsFor(scriptHash);
 			}
@@ -120,19 +124,19 @@ public class ScriptHashReview : SmartContract
 				return GetReviewFromAddress(address, number);
 			}
 			if (operation == "getReviewForScriptHash")
-            {
+			{
 				if (args.Length != 2) { return false; }
 
-                byte[] scriptHash = (byte[])args[0];
-                byte[] number = (byte[])args[1];
+				byte[] scriptHash = (byte[])args[0];
+				byte[] number = (byte[])args[1];
 
 				return GetReviewForScriptHash(scriptHash, number);
-            }
+			}
 
-            //Admin part for the tokens
+			//Admin part for the tokens
 			if (!Runtime.CheckWitness(contractOwnerAddress)) { return false; }
 
-			if (operation == "addToken") 
+			if (operation == "addToken")
 			{
 				if (args.Length != 5) { return false; }
 
@@ -150,7 +154,7 @@ public class ScriptHashReview : SmartContract
 			{
 				if (args.Length != 5) { return false; }
 
-                Token newToken = new Token();
+				Token newToken = new Token();
 
 				newToken.scriptHash = (byte[])args[0];
 				newToken.name = (String)args[1];
@@ -162,24 +166,33 @@ public class ScriptHashReview : SmartContract
 			}
 			if (operation == "deleteToken")
 			{
-				//if (args.Length != 1) { return false; }
+				if (args.Length != 1) { return false; }
 
-				//byte[] scriptHash = (byte[])args[0];
+				BigInteger index = (BigInteger)args[0];
 
-				//return DeleteToken(scriptHash);
+				return DeleteToken(index);
 			}
-            if (operation == "getToken")
+			if (operation == "getToken")
 			{
 				if (args.Length != 1) { return false; }
 
-                byte[] scriptHash = (byte[])args[0];
+				byte[] scriptHash = (byte[])args[0];
 
-				return GetToken(scriptHash);	
+				return GetToken(scriptHash);
 			}
 
 			if (operation == "getNumberOfTokens")
 			{
 				return GetNumberOfTokens();
+			}
+
+			if (operation == "getTokenFromIndex")
+			{
+				if (args.Length != 1) { return false; }
+
+				BigInteger index = (BigInteger)args[0];
+
+				return GetTokenFromIndex(index);
 			}
 		}
 
@@ -387,8 +400,12 @@ public class ScriptHashReview : SmartContract
 		BigInteger currentNumberOfTokens = GetNumberOfTokens();
 		byte[] newNumberOfTokens = (currentNumberOfTokens + 1).AsByteArray();
 
-		Storage.Put(Context(), NumberOfReviewsFromAddressKey(NumberOfTokensKey()), newNumberOfTokens);
+		Storage.Put(Context(), NumberOfTokensKey(), newNumberOfTokens);
 
+		// Add the token to the index
+		byte[] tokenIndexKey = TokenIndexKey(newNumberOfTokens);
+		Storage.Put(Context(), tokenIndexKey, tokenKey);
+			
 		return true;
 	}
 
@@ -411,12 +428,70 @@ public class ScriptHashReview : SmartContract
         return true;
     }
 
+	public static bool DeleteToken(BigInteger index)
+	{
+		if (index <= 0) { return false; }
+
+		// Get the number of tokens
+		byte[] numberOfTokensKey = NumberOfTokensKey();
+		byte[] numberOfTokens = Storage.Get(Context(), numberOfTokensKey);
+              
+		if (index > numberOfTokensKey.AsBigInteger()) { return false; }
+              
+		// Check if there is a token with this index in the storage
+		byte[] tokenIndexKey = TokenIndexKey(index.AsByteArray());
+		byte[] tokenIndex = Storage.Get(Context(), tokenIndexKey);
+      
+        if (tokenIndex.Length < 1) { return false; }
+
+		// Copy the value of the last token
+		byte[] lastTokenIndexKey = TokenIndexKey(numberOfTokens);
+		byte[] lastToken = Storage.Get(Context(), lastTokenIndexKey);
+
+		// Delete the token from the storage      
+		Token tokenFromIndex = (Token)GetTokenFromIndex(index);
+        byte[] tokenScriptHash = tokenFromIndex.scriptHash;
+
+		Storage.Delete(Context(), TokenKey(tokenScriptHash));
+		Storage.Delete(Context(), lastTokenIndexKey);
+
+		// Decrement the number of tokens
+        BigInteger currentNumberOfTokens = GetNumberOfTokens();
+        byte[] newNumberOfTokens = (currentNumberOfTokens - 1).AsByteArray();
+       
+        Storage.Put(Context(), NumberOfTokensKey(), newNumberOfTokens);
+              
+		// Move last value to the removed index if we don't remove the last token in the index
+		if (index != numberOfTokens.AsBigInteger())
+		{
+			Storage.Put(Context(), tokenIndexKey, lastToken);
+		}
+		      
+		return true;
+	}
+
 	public static object GetToken(byte[] scriptHash)
 	{
 		byte[] key = TokenKey(scriptHash);
         byte[] serializedToken = Storage.Get(Context(), key);
 
         if (serializedToken.Length < 1) { return false; }
+
+		Token token = (Token)Neo.SmartContract.Framework.Helper.Deserialize(serializedToken);
+
+		return token;
+	}
+
+	public static object GetTokenFromIndex(BigInteger index)
+	{
+		byte[] key = TokenIndexKey(index.AsByteArray());
+		byte[] tokenIndex = Storage.Get(Context(), key);
+
+		if (tokenIndex.Length < 1) { return false; }
+
+		byte[] serializedToken = Storage.Get(Context(), tokenIndex);
+
+		if (serializedToken.Length < 1) { return false; }
 
 		Token token = (Token)Neo.SmartContract.Framework.Helper.Deserialize(serializedToken);
 
