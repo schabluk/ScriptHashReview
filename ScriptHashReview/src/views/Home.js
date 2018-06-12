@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { StickyContainer, Sticky } from 'react-sticky'
 
 import AddReview from './../components/AddReview'
 import GetReview from './../components/GetReview'
@@ -14,11 +15,12 @@ class Home extends React.Component {
   static propTypes = {
     tokens: PropTypes.array,
     tokenIndex: PropTypes.number,
-    reviews: PropTypes.array
+    reviews: PropTypes.array,
+    onChangeToken: PropTypes.func
   }
 
   render () {
-    const { tokens, tokenIndex, reviews } = this.props
+    const { tokens, tokenIndex, reviews, onChangeToken } = this.props
 
     return (
       <div className='home'>
@@ -41,7 +43,11 @@ class Home extends React.Component {
             }
           </div>
           <div style={{flex: 1}}>
-            <AddReview tokens={tokens} active={tokenIndex} />
+            <AddReview
+              tokens={tokens}
+              active={tokenIndex}
+              onSelectToken={onChangeToken}
+            />
           </div>
         </div>
       </div>

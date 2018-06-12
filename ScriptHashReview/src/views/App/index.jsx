@@ -34,6 +34,10 @@ class App extends React.Component {
     return this.state.tokens[this.state.tokenIndex]
   }
 
+  // Slider DOM node handler.
+  slider = null
+
+  // Slider Settings.
   SliderSettings = {
     className: 'center',
     centerMode: true,
@@ -46,7 +50,13 @@ class App extends React.Component {
     initialSlide: this.state.tokenIndex,
     afterChange: index => {
       this.setState({tokenIndex: index}, this.fetchReviews)
-    }
+    },
+  }
+
+  onChangeToken = hash => {
+    this.setState({reviews: []})
+
+    this.slider.slickGoTo(this.state.tokens.findIndex(t => t.hash === hash))
   }
 
   fetchReviews = debounce(() => {
@@ -57,10 +67,6 @@ class App extends React.Component {
       api.getReviews(hash).then(reviews => this.setState({reviews}))
     })
   }, 1000)
-
-  // fetchReviews = (hash) => {
-  //   console.log('fetch reviews')
-  // }
 
   componentWillMount () {
     const { service: { contract: api } } = this.props
@@ -82,6 +88,7 @@ class App extends React.Component {
           tokens={this.state.tokens}
           tokenIndex={this.state.tokenIndex}
           reviews={this.state.reviews}
+          onChangeToken={this.onChangeToken}
         />
       )
     } />
@@ -127,6 +134,8 @@ class App extends React.Component {
     })
   }
 
+  reference = node => { this.slider = node }
+
   render () {
     const { StoreRoute } = this
     const { classes, history } = this.props
@@ -138,7 +147,7 @@ class App extends React.Component {
             {/* this.renderLogo() */}
             {/* this.renderMenu() */}
           </Header>
-          <Slider {...this.SliderSettings}>
+          <Slider {...this.SliderSettings} ref={this.reference}>
             { this.renderTokens() }
           </Slider>
           <Content>

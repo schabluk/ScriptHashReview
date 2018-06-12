@@ -18,7 +18,8 @@ class AddReview extends React.Component {
   static propTypes = {
     defaultRating: PropTypes.number,
     active: PropTypes.number,
-    tokens: PropTypes.array
+    tokens: PropTypes.array,
+    onSelectToken: PropTypes.func
   }
 
   static defaultProps = {
@@ -59,24 +60,39 @@ class AddReview extends React.Component {
     ))
   }
 
+  componentWillReceiveProps (next) {
+    if (this.props.active !== next.active) {
+      const { hash: nextHash } = next.tokens[next.active]
+      const { hash: currHash } = this.props.form.getFieldsValue(['hash'])
+
+      /* If next hash is euqal to current hash, that means the value was changed
+       * by form Select element, and we don't need to update it. Else, the value
+       * was changed from outside, and we have to change value of the Select. */
+      if (nextHash !== currHash) {
+        this.props.form.setFieldsValue({hash: nextHash})
+      }
+    }
+  }
+
   render() {
     const {
       defaultRating,
       tokens,
       active,
       form: { getFieldDecorator },
-      className
+      className,
+      onSelectToken
     } = this.props
 
     const activeToken = tokens[active]
-    const activeValue = activeToken && activeToken.hash
+    const initialHash = activeToken && activeToken.hash
 
     return (
       <Card title='Add Review' className='add-review' bordered={false}>
         <Form onSubmit={this.handleSubmit}>
           <FormItem {...formItemLayout} label='Token' hasFeedback>
             {getFieldDecorator('hash', {
-              initialValue: activeValue,
+              initialValue: initialHash,
               rules: [
                 {
                   required: true,
@@ -84,7 +100,11 @@ class AddReview extends React.Component {
                 }
               ]
             })(
-              <Select placeholder='Select a Token' size='large'>
+              <Select
+                placeholder='Select Token'
+                size='large'
+                onChange={onSelectToken}
+              >
                 {
                   this.renderTokenOptions()
                 }
