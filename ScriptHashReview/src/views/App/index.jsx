@@ -6,6 +6,7 @@ import { Layout, Menu, Card, Rate } from 'antd'
 import Slider from 'react-slick'
 
 import ImageLoader from './../../components/ImageLoader'
+import Placeholder from './../../components/Placeholder'
 import Home from '../Home'
 import NotFound from '../NotFound'
 import debounce from '../../utils/debounce'
@@ -116,6 +117,12 @@ class App extends React.Component {
 
   renderTokens () {
     const { tokens } = this.state
+
+    if (!tokens.length) {
+      return Array.from({length: 5}).map((v, i) => {
+        return <Placeholder.Token key={i} />
+      })
+    }
 
     return tokens.map(({hash, name, symbol, supply, image}, key) => {
       // ToDo: fetch from backend or avg of last ratings.

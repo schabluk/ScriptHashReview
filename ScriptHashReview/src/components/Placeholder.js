@@ -53,6 +53,61 @@ const Placeholder = props => (
       />
     </div>
   </div>
-);
+)
+
+const Token = props => (
+  <div className="ant-card slide">
+    <div className={"animatedBackground"} style={{ height: "170px" }}>
+      <div
+        className={"ant-card-head backgroundMasker"}
+        style={{ height: 68, top: 0, left: 0, right: 70 }}
+      >
+        <div className="ant-card-extra">
+          <div
+            className={"cropper"}
+            style={{ height: 67, top: 0, left: 0, width: 70 }}
+          >
+            <div
+              className={"avatar animatedBackground"}
+              style={{ top: 18, left: 24 }}
+            />
+          </div>
+        </div>
+      </div>
+      <div
+        className={"backgroundMasker"}
+        style={{ height: 20, top: 0, width: 56, right: 24 }}
+      />
+      <div
+        className={"backgroundMasker"}
+        style={{ height: 67, top: 0, width: 24, right: 0 }}
+      />
+      <div
+        className={"backgroundMasker"}
+        style={{ height: 20, top: 46, width: 56, right: 24 }}
+      />
+      <div
+        className={"backgroundMasker"}
+        style={{ height: 20, top: 68, right: 100, left: 100 }}
+      />
+      <div
+        className={"backgroundMasker"}
+        style={{ height: 52, top: 68, left: 0, width: 100 }}
+      />
+      <div
+        className={"backgroundMasker"}
+        style={{ height: 52, top: 68, right: 0, width: 100 }}
+      />
+      <div
+        className={"footer backgroundMasker"}
+        style={{ height: 60, bottom: 0, left: 0, right: 0 }}
+      >
+        <Rate disabled allowHalf defaultValue={0} />
+      </div>
+    </div>
+  </div>
+)
+
+Placeholder.Token = Token
 
 export default Placeholder;

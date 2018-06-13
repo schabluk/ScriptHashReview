@@ -12,6 +12,12 @@
   overflow: hidden;
 }
 
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 @keyframes placeHolderShimmer {
   0% {
     background-position: -1000px 0;
