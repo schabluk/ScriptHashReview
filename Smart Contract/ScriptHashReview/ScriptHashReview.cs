@@ -22,8 +22,8 @@ public class ScriptHashReview : SmartContract
 	// testinvoke 96c96e9aec55af45359c1d694a0c4605d8bc1e91 getTokenFromIndex ['1']
     
     // Contract owner key   
-	public static readonly byte[] contractOwnerAddress = "AK2nJJpJr6o664CWJKi1QRXjqeic2zRp8y".ToScriptHash();
-
+	public static readonly byte[] adminAddress1 = "Acyzv3r5eaE3vJ9ALRHaNXpR2twuVHfAEG".ToScriptHash();
+	public static readonly byte[] adminAddress2 = "AaU3jaE9Hm3YYG7ydBgWmZ3L3TbGPSpcLn".ToScriptHash();
     // Utilities
 	private static StorageContext Context() => Storage.CurrentContext;
      
@@ -41,10 +41,11 @@ public class ScriptHashReview : SmartContract
     {
 		if (Runtime.Trigger == TriggerType.Verification)
 		{
-			bool isOwner = Runtime.CheckWitness(contractOwnerAddress);
+			bool isAdmin = false;
 
-			if (isOwner) { return true; }
-			else { return false; }
+			if (Runtime.CheckWitness(adminAddress1) || Runtime.CheckWitness(adminAddress2)) { isAdmin = true; }
+
+			if (!isAdmin) { return false; }
 		}
 		else if (Runtime.Trigger == TriggerType.Application)
 		{
@@ -111,7 +112,10 @@ public class ScriptHashReview : SmartContract
 			}
 
 			//Admin part for the tokens
-			if (!Runtime.CheckWitness(contractOwnerAddress)) { return false; }
+			bool isAdmin = false;
+            if (Runtime.CheckWitness(adminAddress1) || Runtime.CheckWitness(adminAddress2)) { isAdmin = true; }
+            if (!isAdmin) { return false; }
+          
 
 			if (operation == "addToken")
 			{
@@ -259,8 +263,17 @@ public class ScriptHashReview : SmartContract
 		Review reviewFromIndex = (Review)GetReviewForScriptHash(scriptHash, index.AsByteArray());
         
         // Make sure only the review owner or the admins can delete the review
-		if (!Runtime.CheckWitness(reviewFromIndex.reviewOwner) || !Runtime.CheckWitness(contractOwnerAddress)) { return false; }
+		bool isAdmin = false;
+		bool isOwner = false;
+		bool canDelete = false;
 
+        if (Runtime.CheckWitness(adminAddress1) || Runtime.CheckWitness(adminAddress2)) { isAdmin = true; }
+		if (Runtime.CheckWitness(reviewFromIndex.reviewOwner)) { isOwner = true; }
+
+		if (isOwner || isAdmin) { canDelete = true; }
+
+		if (!canDelete) { return false; }
+        
 		// Copy the last review for the scripthash
 		Review lastReviewForScriptHash = (Review)GetReviewForScriptHash(scriptHash, numberOfReviewForScriptHash.AsByteArray());
 
