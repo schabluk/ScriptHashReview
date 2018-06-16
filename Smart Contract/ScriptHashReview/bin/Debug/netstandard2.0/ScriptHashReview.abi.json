@@ -1,5 +1,5 @@
 {
-    "hash":"0x6faccce567a901b72d30a832fd126efd07061bb5",
+    "hash":"0xf2e06fbd4c58c2ab8e0a942e3da50b4ea8759e7f",
     "entrypoint":"Main",
     "functions":
     [
@@ -60,30 +60,15 @@
             "parameters":
             [
                 {
-                    "name":"address",
+                    "name":"scriptHash",
                     "type":"ByteArray"
                 },
                 {
-                    "name":"scriptHash",
-                    "type":"ByteArray"
+                    "name":"index",
+                    "type":"Integer"
                 }
             ],
             "returntype":"Boolean"
-        },
-        {
-            "name":"GetReviewFromAddress",
-            "parameters":
-            [
-                {
-                    "name":"address",
-                    "type":"ByteArray"
-                },
-                {
-                    "name":"number",
-                    "type":"ByteArray"
-                }
-            ],
-            "returntype":"Any"
         },
         {
             "name":"GetReviewForScriptHash",
@@ -94,22 +79,11 @@
                     "type":"ByteArray"
                 },
                 {
-                    "name":"number",
+                    "name":"index",
                     "type":"ByteArray"
                 }
             ],
             "returntype":"Any"
-        },
-        {
-            "name":"GetNumberOfReviewsFrom",
-            "parameters":
-            [
-                {
-                    "name":"address",
-                    "type":"ByteArray"
-                }
-            ],
-            "returntype":"Integer"
         },
         {
             "name":"GetNumberOfReviewsFor",
