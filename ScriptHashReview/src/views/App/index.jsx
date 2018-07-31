@@ -196,7 +196,7 @@ class App extends Component {
           </Slider>
           <Content>
             <Switch>
-              <StoreRoute exact path='/' component={Home} />
+              <StoreRoute path='/' component={Home} />
               <Route component={NotFound} />
             </Switch>
           </Content>
