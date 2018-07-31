@@ -197,7 +197,7 @@ class App extends Component {
           <Content>
             <Switch>
               <StoreRoute exact path='/' component={Home} />
-              <Route component={Home} />
+              <StoreRoute component={Home} />
             </Switch>
           </Content>
         </Layout>
