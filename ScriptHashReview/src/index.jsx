@@ -10,6 +10,7 @@ import vendorPrefixer from "jss-vendor-prefixer";
 import { JssProvider } from "react-jss";
 
 import App from "./views/App";
+// import Service from "./Service";
 import Service from "./Service.dev";
 
 window.Service = Service

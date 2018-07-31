@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Card, Rate, Avatar } from 'antd'
+import { Card, Rate, Avatar, Popover } from 'antd'
 import Identicon from 'identicon.js'
 
 import ImageLoader from './ImageLoader'
@@ -31,7 +31,24 @@ class GetReview extends React.Component {
           <Rate disabled allowHalf defaultValue={0} value={ratingValue} />
         }>
         <Meta
-          avatar={<Avatar src={`data:image/png;base64,${avatarData}`} />}
+          avatar={
+            <Popover
+              placement='right'
+              // title='Donate GAS to the user'
+              content={
+                <div>
+                  Address: {reviewOwner}
+                </div>
+              }
+              trigger='click'
+            >
+              <div className='donate' title='Donate GAS'>
+                <Avatar
+                  src={`data:image/png;base64,${avatarData}`}
+                />
+              </div>
+            </Popover>
+          }
           description={comment}
         />
       </Card>

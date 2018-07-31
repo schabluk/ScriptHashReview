@@ -57,7 +57,7 @@ const Placeholder = props => (
 
 const Token = props => (
   <div className="ant-card slide">
-    <div className={"animatedBackground"} style={{ height: "170px" }}>
+    <div className={"animatedBackground"} style={{ height: "172px" }}>
       <div
         className={"ant-card-head backgroundMasker"}
         style={{ height: 68, top: 0, left: 0, right: 70 }}
@@ -84,23 +84,23 @@ const Token = props => (
       />
       <div
         className={"backgroundMasker"}
-        style={{ height: 20, top: 46, width: 56, right: 24 }}
+        style={{ height: 20, top: 47, width: 56, right: 24 }}
       />
       <div
         className={"backgroundMasker"}
-        style={{ height: 20, top: 68, right: 100, left: 100 }}
+        style={{ height: 20, top: 68, right: 0, left: 0 }}
       />
       <div
         className={"backgroundMasker"}
-        style={{ height: 52, top: 68, left: 0, width: 100 }}
+        style={{ height: 52, top: 68, left: 0, width: '25%' }}
       />
       <div
         className={"backgroundMasker"}
-        style={{ height: 52, top: 68, right: 0, width: 100 }}
+        style={{ height: 52, top: 68, right: 0, width: '25%' }}
       />
       <div
         className={"footer backgroundMasker"}
-        style={{ height: 60, bottom: 0, left: 0, right: 0 }}
+        style={{ height: 62, bottom: 0, left: 0, right: 0 }}
       >
         <Rate disabled allowHalf defaultValue={0} />
       </div>

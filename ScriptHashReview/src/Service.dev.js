@@ -95,6 +95,7 @@ const Service = {
     async getNumberOfReviewsFor (scriptHash) {
       try {
         return await Delay(500).then(() => randomIntFromInterval(5, 20))
+        // return await Delay(500).then(() => 0) // No reviews.
       } catch (error) {
         throw new Error(`Fake API getNumberOfReviewsFor: ${error.message}`)
       }

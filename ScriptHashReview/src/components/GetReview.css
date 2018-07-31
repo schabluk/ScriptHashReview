@@ -16,3 +16,12 @@
 .get-review .ant-card-extra {
   padding: 13px 0;
 }
+
+.donate {
+  cursor: pointer;
+  opacity: 0.75;
+}
+
+.donate:hover {
+  opacity: 1;
+}

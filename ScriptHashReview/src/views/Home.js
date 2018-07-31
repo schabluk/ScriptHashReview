@@ -1,10 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { Card } from 'antd'
 import { StickyContainer, Sticky } from 'react-sticky'
 
 import AddReview from './../components/AddReview'
 import GetReview from './../components/GetReview'
-import Placeholder from "./../components/Placeholder";
+import Placeholder from './../components/Placeholder'
 
 import './Home.css'
 
@@ -18,8 +19,14 @@ class Home extends React.Component {
     onChangeToken: PropTypes.func
   }
 
+  getStickyStyle = style => {
+    return style.hasOwnProperty('top')
+      ? {...style, marginTop: '1rem'}
+      : style
+  }
+
   render () {
-    const { tokens, tokenIndex, reviews, onChangeToken } = this.props
+    const { tokens, tokenIndex, reviews, onChangeToken, loading } = this.props
 
     return (
       <StickyContainer>
@@ -28,15 +35,23 @@ class Home extends React.Component {
             Script Hash Review
           </h3>
           <div className='description'>
-            ScriptHashReview aims at allowing users to review every smart contract and their
-            script hash associated, that are made available on the NEO Smart Economy.
+            ScriptHashReview aims at allowing users to review every smart contract and their script hash associated, that are made available on the NEO Smart Economy.
           </div>
           <div className='media'>
             <div style={{flex: 1}}>
               {
-                !reviews.length && Array.from({length: 5}).map((v, i) => {
+                !reviews.length && loading && Array.from({length: 5}).map((v, i) => {
                   return <Placeholder key={i} />
                 })
+              }
+              {
+                !reviews.length && !loading && (
+                  <Card className='get-review not-found' title='No reviews found'>
+                    <h3 style={{textAlign: 'center', margin: '2rem 0'}}>
+                      Fill in the form to add your own review.
+                    </h3>
+                  </Card>
+                )
               }
               {
                 reviews.map((review, key) => <GetReview key={key} {...review} />)
@@ -44,18 +59,15 @@ class Home extends React.Component {
             </div>
             <div style={{flex: 1}}>
               <Sticky topOffset={110}>
-                {({style}) => {
-
-                  return (
-                    <div style={style.hasOwnProperty('top')? {...style, marginTop: '1rem'} : style}>
-                      <AddReview
-                        tokens={tokens}
-                        active={tokenIndex}
-                        onSelectToken={onChangeToken}
-                      />
-                    </div>
-                  )
-                }}
+                {({style}) => (
+                  <div style={this.getStickyStyle(style)}>
+                    <AddReview
+                      tokens={tokens}
+                      active={tokenIndex}
+                      onSelectToken={onChangeToken}
+                    />
+                  </div>
+                )}
               </Sticky>
             </div>
           </div>

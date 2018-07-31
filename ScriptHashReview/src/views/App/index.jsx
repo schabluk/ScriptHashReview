@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import injectSheet from 'react-jss'
 import { Route, Router, Switch, Link, NavLink } from 'react-router-dom'
-import { Layout, Menu, Card, Rate } from 'antd'
+import { Layout, Menu, Card, Rate, Tag } from 'antd'
 import Slider from 'react-slick'
 
 import ImageLoader from './../../components/ImageLoader'
@@ -19,7 +19,10 @@ import '../../stylesheets/index.css'
 
 const { Header, Content } = Layout
 
-class App extends React.Component {
+const NEO = 'c56f33fc6ecfcd0c225c4ab356fee59390af8560be0e930faebe74a6daff7c9b'
+const GAS = '602c79718b16e442de58778e148d0b1084e3b2dffd5de6b7b16cee7969282de7'
+
+class App extends Component {
   static propTypes = {
     history: PropTypes.object.isRequired,
     service: PropTypes.object.isRequired,
@@ -28,7 +31,11 @@ class App extends React.Component {
   state = {
     tokens: [],
     reviews: [],
-    tokenIndex: 0
+    tokenIndex: 0,
+    loading: false,
+    address: 'None',
+    neo: 0,
+    gas: 0,
   }
 
   get selectedToken () {
@@ -55,7 +62,7 @@ class App extends React.Component {
   }
 
   onChangeToken = hash => {
-    this.setState({reviews: []})
+    this.setState({reviews: [], loading: true})
 
     this.slider.slickGoTo(this.state.tokens.findIndex(t => t.hash === hash))
   }
@@ -64,18 +71,35 @@ class App extends React.Component {
     const { service: { contract: api } } = this.props
     const { hash } = this.selectedToken
 
-    this.setState({reviews: []}, () => {
-      api.getReviews(hash).then(reviews => this.setState({reviews}))
+    this.setState({reviews: [], loading: true}, () => {
+      api.getReviews(hash).then(
+        reviews => this.setState({reviews, loading: false})
+      )
     })
   }, 1000)
 
   componentWillMount () {
-    const { service: { contract: api } } = this.props
+    const { service: { contract: api, nos } } = this.props
 
-    api.getTokens().then(tokens => this.setState({tokens})).then(() => {
-      const { hash } = this.selectedToken
+    nos.getAddress()
+      .then(address => this.setState({address}))
+      .then(
+        () => Promise.all([
+          nos.getBalance(NEO),
+          nos.getBalance(GAS)
+        ]).then(
+          ([neo, gas]) => (neo || gas) && this.setState({neo, gas})
+        )
+      )
 
-      api.getReviews(hash).then(reviews => this.setState({reviews}))
+    api.getTokens().then(tokens => this.setState({tokens, loading: true})).then(() => {
+      // if (!this.selectedToken) return
+      //
+      // const { hash } = this.selectedToken
+      //
+      // api.getReviews(hash).then(
+      //   reviews => this.setState({reviews, loading: false})
+      // )
     })
   }
 
@@ -89,6 +113,7 @@ class App extends React.Component {
           tokens={this.state.tokens}
           tokenIndex={this.state.tokenIndex}
           reviews={this.state.reviews}
+          loading={this.state.loading}
           onChangeToken={this.onChangeToken}
         />
       )
@@ -119,9 +144,9 @@ class App extends React.Component {
     const { tokens } = this.state
 
     if (!tokens.length) {
-      return Array.from({length: 5}).map((v, i) => {
-        return <Placeholder.Token key={i} />
-      })
+      return Array.from({length: 5}).map((v, i) => (
+        <Placeholder.Token key={i} />
+      ))
     }
 
     return tokens.map(({hash, name, symbol, supply, image}, key) => {
@@ -141,6 +166,18 @@ class App extends React.Component {
     })
   }
 
+  renderAccount () {
+    const { address, neo, gas } = this.state
+
+    return (
+      <Fragment>
+        <Tag color='blue'>Address: {address}</Tag>
+        <Tag color='green'>NEO: {neo}</Tag>
+        <Tag color='gold'>GAS: {gas}</Tag>
+      </Fragment>
+    )
+  }
+
   reference = node => { this.slider = node }
 
   render () {
@@ -151,8 +188,8 @@ class App extends React.Component {
       <Router history={history}>
         <Layout className='app'>
           <Header className='header'>
-            {/* this.renderLogo() */}
             {/* this.renderMenu() */}
+            { this.renderAccount() }
           </Header>
           <Slider {...this.SliderSettings} ref={this.reference}>
             { this.renderTokens() }
