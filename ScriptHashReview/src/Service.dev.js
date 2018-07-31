@@ -1,5 +1,8 @@
 import axios, { get } from 'axios'
+import nOS from '@nosplatform/api-functions'
+import { u, wallet } from '@cityofzion/neon-js'
 import faker from 'faker'
+
 import Tokens from './Tokens'
 
 /*
@@ -156,23 +159,21 @@ const Service = {
   nos: {
     async getAddress () {
       try {
-        return await Delay(500).then(() => finance.bitcoinAddress())
+        return await nOS.getAddress()
       } catch (error) {
         throw new Error(`nOS API getAddress: ${error.message}`)
       }
     },
     async getBalance (scriptHash) {
       try {
-        return await Delay(500).then(() => Math.random() * 100)
+        return await nOS.getBalance({asset: scriptHash})
       } catch (error) {
         throw new Error(`nOS API getAddress: ${error.message}`)
       }
     },
     async send (amount, scriptHash, receiver) {
       try {
-        return await Delay(900).then(() => {
-          return `${random.uuid()}${random.uuid()}`.replace(/-/g, '')
-        })
+        return await nOS.send({amount, asset: scriptHash, receiver})
       } catch (error) {
         throw new Error(`nOS API send: ${error.message}`)
       }
