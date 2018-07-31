@@ -185,23 +185,25 @@ class App extends Component {
     const { classes, history } = this.props
 
     return (
-      <Router history={history}>
-        <Layout className='app'>
-          <Header className='header'>
-            {/* this.renderMenu() */}
-            { this.renderAccount() }
-          </Header>
-          <Slider {...this.SliderSettings} ref={this.reference}>
-            { this.renderTokens() }
-          </Slider>
-          <Content>
-            <Switch>
-              <StoreRoute exact path='/' component={Home} />
-              <StoreRoute component={Home} />
-            </Switch>
-          </Content>
-        </Layout>
-      </Router>
+      <Layout className='app'>
+        <Header className='header'>
+          {/* this.renderMenu() */}
+          { this.renderAccount() }
+        </Header>
+        <Slider {...this.SliderSettings} ref={this.reference}>
+          { this.renderTokens() }
+        </Slider>
+        <Content>
+          <Home
+            service={this.props.service}
+            tokens={this.state.tokens}
+            tokenIndex={this.state.tokenIndex}
+            reviews={this.state.reviews}
+            loading={this.state.loading}
+            onChangeToken={this.onChangeToken}
+          />
+        </Content>
+      </Layout>
     )
   }
 }
