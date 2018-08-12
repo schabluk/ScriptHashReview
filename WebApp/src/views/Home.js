@@ -16,7 +16,8 @@ class Home extends React.Component {
     tokens: PropTypes.array,
     tokenIndex: PropTypes.number,
     reviews: PropTypes.array,
-    onChangeToken: PropTypes.func
+    onChangeToken: PropTypes.func,
+    onAddReview: PropTypes.func,
   }
 
   getStickyStyle = style => {
@@ -26,7 +27,7 @@ class Home extends React.Component {
   }
 
   render () {
-    const { tokens, tokenIndex, reviews, onChangeToken, loading } = this.props
+    const { tokens, tokenIndex, reviews, onChangeToken, onAddReview, loading } = this.props
 
     return (
       <StickyContainer>
@@ -34,9 +35,6 @@ class Home extends React.Component {
           <h3 className='jumbotron'>
             Script Hash Review
           </h3>
-          <div className='description'>
-            ScriptHashReview aims at allowing users to review every smart contract and their script hash associated, that are made available on the NEO Smart Economy.
-          </div>
           <div className='media'>
             <div style={{flex: 1}}>
               {
@@ -65,6 +63,7 @@ class Home extends React.Component {
                       tokens={tokens}
                       active={tokenIndex}
                       onSelectToken={onChangeToken}
+                      onSubmit={onAddReview}
                     />
                   </div>
                 )}

@@ -67,12 +67,26 @@ class App extends Component {
     this.slider.slickGoTo(this.state.tokens.findIndex(t => t.hash === hash))
   }
 
+  onAddReview = ({hash, rate, comment}) => {
+    const { service: { contract: api } } = this.props
+    const { address } = this.state
+
+    this.setState({loading: true}, () => {
+      api.addReview(address, hash, rate.toString(), comment).then(data => {
+        api.getReviews(address, hash).then(
+          reviews => this.setState({reviews, loading: false})
+        )
+      })
+    })
+  }
+
   fetchReviews = debounce(() => {
     const { service: { contract: api } } = this.props
+    const { address } = this.state
     const { hash } = this.selectedToken
 
     this.setState({reviews: [], loading: true}, () => {
-      api.getReviews(hash).then(
+      api.getReviews(address, hash).then(
         reviews => this.setState({reviews, loading: false})
       )
     })
@@ -81,33 +95,27 @@ class App extends Component {
   componentWillMount () {
     const { service: { contract: api, nos } } = this.props
 
-    api.test(
-      'AaU3jaE9Hm3YYG7ydBgWmZ3L3TbGPSpcLn', '74f1d2ca1c2bad87231a450e0a33def1a139b166', 5, 'Lorem ipsum'
-    )
-      // .then(data => {
-      //   console.log('componentWillMount.Test')
-      //   console.log(JSON.stringify(data))
-      // })
-
-    nos.getAddress()
-      .then(address => this.setState({address}))
-      .then(
-        () => Promise.all([
-          nos.getBalance(NEO),
-          nos.getBalance(GAS)
-        ]).then(
-          ([neo, gas]) => (neo || gas) && this.setState({neo, gas})
-        )
-      )
-
     api.getTokens().then(tokens => this.setState({tokens, loading: true})).then(() => {
-      // if (!this.selectedToken) return
-      //
-      // const { hash } = this.selectedToken
-      //
-      // api.getReviews(hash).then(
-      //   reviews => this.setState({reviews, loading: false})
-      // )
+      nos.getAddress()
+        .then(address => this.setState({address}, () => {
+          const { address } = this.state
+
+          if (!this.selectedToken) return
+
+          const { hash } = this.selectedToken
+
+          api.getReviews(address, hash).then(
+            reviews => this.setState({reviews, loading: false})
+          )
+        }))
+        .then(
+          () => Promise.all([
+            nos.getBalance(NEO),
+            nos.getBalance(GAS)
+          ]).then(
+            ([neo, gas]) => (neo || gas) && this.setState({neo, gas})
+          )
+        )
     })
   }
 
@@ -209,6 +217,7 @@ class App extends Component {
             reviews={this.state.reviews}
             loading={this.state.loading}
             onChangeToken={this.onChangeToken}
+            onAddReview={this.onAddReview}
           />
         </Content>
       </Layout>

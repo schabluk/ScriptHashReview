@@ -19,7 +19,8 @@ class AddReview extends React.Component {
     defaultRating: PropTypes.number,
     active: PropTypes.number,
     tokens: PropTypes.array,
-    onSelectToken: PropTypes.func
+    onSelectToken: PropTypes.func,
+    onSubmit: PropTypes.func
   }
 
   static defaultProps = {
@@ -33,7 +34,9 @@ class AddReview extends React.Component {
 
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values)
+        this.props.onSubmit(values)
+      } else {
+        console.log(err)
       }
     })
   }
