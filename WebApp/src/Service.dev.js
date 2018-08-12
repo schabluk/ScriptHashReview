@@ -48,8 +48,9 @@ const tokens = Object.values(Tokens).map(
 
 /*
  * Smart Contract Script Hash.
+ * Deployed via API.
  */
-const contractHash = '210bfee659fd9d2f696301d0e11c51393a28821f'
+const contractHash = '7f02c3462f5c6ea49dcbc28442857f2c0102e5ce'
 const contractAddress = 'AaU3jaE9Hm3YYG7ydBgWmZ3L3TbGPSpcLn'
 
 /*
