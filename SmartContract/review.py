@@ -2,6 +2,10 @@
 Smart Contract based Assets review on NEO blockchain
 Created by Lukasz Schabek
 lukasz.schabek@gmail.com
+
+ToDo:
+- avg of last rating into the Storage
+- tokens list into the Storage (basci CRUD)
 """
 
 from boa.interop.Neo.Runtime import CheckWitness, Log, Serialize, Deserialize
@@ -110,16 +114,9 @@ def Main(operation, args):
                 return False
             else:
                 return numberVal
-        if operation == 'getReviewForScriptHash':            
-            Log('getReviewForScriptHash')
-            Log(int_to_str(args[2]))
-
+        if operation == 'getReviewForScriptHash':
             scriptKey = getScriptKey(script_hash, int_to_str(args[2]))
             reviewKey = Get(context, scriptKey)
-
-            Log(scriptKey)
-            Log(reviewKey)
-
             if not reviewKey:
                 return False
             else:
