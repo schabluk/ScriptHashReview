@@ -73,6 +73,9 @@ class App extends Component {
 
     this.setState({loading: true}, () => {
       api.addReview(address, hash, rate.toString(), comment).then(data => {
+        console.log('onAddReview')
+        console.log(address, hash, rate.toString(), comment)
+        console.log(data)
         api.getReviews(address, hash).then(
           reviews => this.setState({reviews, loading: false})
         )

@@ -38,7 +38,7 @@ class Home extends React.Component {
           <div className='media'>
             <div style={{flex: 1}}>
               {
-                !reviews.length && loading && Array.from({length: 5}).map((v, i) => {
+                !reviews.length && loading && Array.from({length: 1}).map((v, i) => {
                   return <Placeholder key={i} />
                 })
               }
