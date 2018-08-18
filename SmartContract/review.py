@@ -15,7 +15,7 @@ from boa.builtins import concat
 
 ### Storage Key for storing Review.
 def getReviewKey(address, script_hash):
-    return concat("review.neo.review.", address, script_hash)
+    return concat("review.neo.review.", concat(address, script_hash))
 
 ### Storage Key for storing the Number of Reviews of a Script Hash.
 def getNumberKey(script_hash):
@@ -111,9 +111,9 @@ def Main(operation, args):
         if operation == 'getNumberOfReviews':
             numberVal = Get(context, numberKey)
             if not numberVal:
-                return False
+                return '0'
             else:
-                return numberVal
+                return int_to_str(numberVal)
         if operation == 'getReviewForScriptHash':
             scriptKey = getScriptKey(script_hash, int_to_str(args[2]))
             reviewKey = Get(context, scriptKey)
